@@ -1,5 +1,31 @@
 # bamazon
 
+###Introduction
+
+The goal of this homework is to build skills in SQL as well as build further skills in Node.js (with packages), and to continue building JS skills in general. The object of the homework itself, is to build a "Bamazon" app. There are three separate apps, customer, manager, and supervisor. In the customer app you can make purchases which reflect in the SQL DB. In the manager app you can view low stock, add units to existing products as well as add new products. In the supervisor app you can view information regarding departments.
+
+###Technologies 
+
+MySQL, Node.js, Inquirer, console.table.
+
+###Features
+
+-Customer can make purchases.
+
+-Manager can view stock, view low stock, add units to existing products, add new products.
+
+-Supervisor can view data regard department overhead and profits.
+
+####Features I'd like to add
+
+-A super basic front-end interface...?
+
+######Link to see Liri in action!!
+
+https://drive.google.com/file/d/11MaNL8EZ6lGNMplTmu1uxxg6FI6Mzau8/view
+
+#####Assignment Instructions Below
+
 # Node.js & MySQL
 
 ## Overview
