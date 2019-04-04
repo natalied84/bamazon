@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var cTable = require('console.table');
 var connection = mysql.createConnection({
     host: "localHost",
     user: "root",
@@ -20,20 +21,22 @@ function supervisorView() {
             case "View Product Sales by Department":
                 connection.query("SELECT departments.department_id, departments.department_name, 	departments.over_head_costs, SUM(products.product_sales) AS product_sales, SUM(products.product_sales)-departments.over_head_costs AS total_profit FROM departments LEFT JOIN products ON departments.department_name=products.dept_name GROUP BY departments.department_id", function (err, res) {
                     if (err) throw err;
+                    var values = []
                     for (var i = 0; i < res.length; i++) {
-                        var pSales = res[i].product_sales
-                        var profits = res[i].total_profit
+                        var pSales = res[i].product_sales;
+                        var profits = res[i].total_profit;
                         if (!pSales) {
                             pSales = 0;
                             profits = 0 - res[i].over_head_costs;
                         }
-                        console.log(`Dept. ID: ${res[i].department_id} || Department: ${res[i].department_name} || Overhead: ${res[i].over_head_costs} || Sales: ${pSales} || Profit: ${profits}`)
+                        values.push([res[i].department_id, res[i].department_name,res[i].over_head_costs, pSales, profits])
                     }
+                    console.table(["Department ID", "Department Name", "Overhead", "Sales","Profit"], values);
                     inquirer.prompt([{
                         name: "N/A",
                         message: "\nPress enter to return to main menu.\n",
                     }]).then(function (iResp) {
-                        supervisorView()
+                        supervisorView();
                     })
                 })
                 break;

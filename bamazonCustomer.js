@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var cTable = require('console.table');
 var connection = mysql.createConnection({
     host: "localHost",
     user: "root",
@@ -11,9 +12,11 @@ var connection = mysql.createConnection({
 function bamazonStart() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
+        var values = [];
         for (var i = 0; i < res.length; i++) {
-            console.log(`Product ID: ${res[i].item_id} || Product Name: ${res[i].product_name} || Department: ${res[i].dept_name} || Price (CAD): ${res[i].price} || ${res[i].stock_qty} left`)
+            values.push([res[i].item_id, res[i].product_name, res[i].dept_name, res[i].price,res[i].stock_qty])
         }
+        console.table(["Product ID","Product Name", "Department", "Price", "Qty Left"], values)
         inquirer.prompt([{
                 name: "itemId",
                 message: "What is the ID of the item you'd like to purchase?"

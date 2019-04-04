@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var cTable = require('console.table');
 var connection = mysql.createConnection({
     host: "localHost",
     user: "root",
@@ -16,13 +17,15 @@ function managerView() {
         choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "Exit"]
     }]).then(function (iResp) {
         switch (iResp.cmd) {
-            
+
             case "View Products for Sale":
                 connection.query("SELECT * FROM products", function (err, res) {
                     if (err) throw err;
+                    var values = [];
                     for (var i = 0; i < res.length; i++) {
-                        console.log(`Product ID: ${res[i].item_id} || Product Name: ${res[i].product_name} || Department: ${res[i].dept_name} || Price (CAD): ${res[i].price} || ${res[i].stock_qty} left`)
+                        values.push([res[i].item_id, res[i].product_name, res[i].dept_name, res[i].price,res[i].stock_qty])
                     }
+                    console.table(["Product ID", "Product Name", "Department", "Price", "Qty Left"], values);
                     inquirer.prompt([{
                         name: "N/A",
                         message: "\nPress enter to return to main menu.\n",
@@ -35,14 +38,15 @@ function managerView() {
             case "View Low Inventory":
                 connection.query("SELECT item_id, product_name, stock_qty FROM products WHERE stock_qty < 5", function (err, res) {
                     if (err) throw err;
+                    var values = [];
                     for (var i = 0; i < res.length; i++) {
-                        console.log(`Product ID: ${res[i].item_id} || Product Name: ${res[i].product_name} || ${res[i].stock_qty} left`);
+                        values.push([res[i].item_id, res[i].product_name, res[i].stock_qty]);
                     }
+                    console.table(["Product ID", "Product Name", "Qty Left"], values);
                     inquirer.prompt([{
                         name: "N/A",
                         message: "\nPress enter to return to main menu.\n",
                     }]).then(function (iResp) {
-                        
                         managerView();
                     })
                 })
@@ -54,7 +58,7 @@ function managerView() {
                     for (var i = 0; i < res.length; i++) {
                         console.log(`Product ID: ${res[i].item_id} || Product Name: ${res[i].product_name} || ${res[i].stock_qty} left`);
                     }
-                    console.log("-------------------\n")
+                    console.log("-------------------\n");
                     inquirer.prompt([{
                             name: "item",
                             message: "What would you like to add stock to? (Item #)"
@@ -95,9 +99,11 @@ function managerView() {
                                         if (err) throw err;
                                         connection.query("SELECT item_id, stock_qty FROM products WHERE item_id=?", [`"${iResp.item}"`], function (err, res) {
                                             if (err) throw err;
+                                            var values = [];
                                             for (var i = 0; i < res.length; i++) {
-                                                console.log(`Product ID: ${res[i].item_id} || Product Name: ${res[i].product_name} || ${res[i].stock_qty} left`);
+                                                values.push([res[i].item_id, res[i].product_name, res[i].stock_qty]);
                                             }
+                                            console.table(["Product ID", "Product Name", "Qty Left"], values);
                                             inquirer.prompt([{
                                                 name: "N/A",
                                                 message: "\nPress enter to return to main menu.\n",
@@ -172,7 +178,7 @@ function managerView() {
                 })
                 break;
 
-                case "exit":
+                case "Exit":
                 connection.end(function (err) {
                     if (err) throw err;
                 })

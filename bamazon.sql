@@ -14,9 +14,9 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (product_name, dept_name, price, stock_qty)
-VALUES ("Banana (single)", "Produce", 0.79, 50), 
-("Bananas (bunch)", "Produce", 2.99, 50),
-("Small Moon Comprised of Solely Bananas", "Produce", 799999999.98, 50),  
+VALUES ("Banana (single)", "Produce", 0.79, 500), 
+("Bananas (bunch)", "Produce", 2.99, 100),
+("Small Moon Comprised of Solely Bananas", "Produce", 799999999.98, 5),  
 ("Hammer (non-Thor's)", "Hardware/Tools", 15, 14),
 ("Tape Measure", "Hardware/Tools", 8, 37), 
 ("Mjolnir", "Magical Weapons", 14999999.99, 1),
@@ -42,7 +42,7 @@ SELECT * FROM departments;
 SELECT departments.department_id, 
 	departments.department_name, 
 	departments.over_head_costs, 
-	SUM(products.product_sales) AS total_product_sales, 
+	SUM(products.product_sales) AS product_sales, 
 	SUM(products.product_sales)-departments.over_head_costs AS total_profit 
 	FROM departments LEFT JOIN products 
-	ON departments.department_name=products.dept_name GROUP BY departments.department_id, products.product_sales; 
+	ON departments.department_name=products.dept_name GROUP BY departments.department_id; 
