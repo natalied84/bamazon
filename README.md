@@ -20,7 +20,7 @@ MySQL, Node.js, Inquirer, console.table.
 
 -A super basic front-end interface...?
 
-###### Link to see Liri in action!!
+###### Link to see Bamazon in action!!
 
 https://drive.google.com/file/d/11MaNL8EZ6lGNMplTmu1uxxg6FI6Mzau8/view
 
